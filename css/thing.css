@@ -1,0 +1,10 @@
+#filedrop {
+	border: 2px dashed grey;
+	width: 15em;
+	padding: 1em;
+	text-align: center;
+}
+
+#filedrop.over {
+	border-color: blue;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>something by cp</title>
+
+		<!-- jquery -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+		<!-- knockout -->
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.0.0/knockout-min.js"></script>
+
+		<!-- normalise.css -->
+		<link rel="stylesheet" href="http://css.cdn.tl/normalize.css"></link>
+
+		<script type="text/javascript" src="js/thing.js"></script>
+		<link rel="stylesheet" href="css/thing.css"></link>
+	</head>
+	<body>
+		<div id="filedrop">Drop a file here</div>
+
+		<table id="logs">
+			<thead>
+				<th>IP</th>
+				<th>User</th>
+				<th>Date</th>
+				<th>Request</th>
+				<th>HTTP Status</th>
+				<th>Size</th>
+				<th>Agent</th>
+			</thead>
+			<tbody data-bind="foreach: logs">
+				<tr>
+					<td data-bind="text: ip"></td>
+					<td data-bind="text: userid"></td>
+					<td data-bind="text: date"></td>
+					<td data-bind="text: request"></td>
+					<td data-bind="text: code"></td>
+					<td data-bind="text: size"></td>
+					<td data-bind="text: agent"></td>
+				</tr>
+			</tbody>
+
+	</body>
+</html>
+
+
+
