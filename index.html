@@ -7,8 +7,11 @@
 		<!-- jquery -->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
+		<!-- d3 -->
+		<script src="http://d3js.org/d3.v2.js"></script>
+
 		<!-- knockout -->
-		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.0.0/knockout-min.js"></script>
+		<script type="text/javascript" src="js/knockout-2.0.0.js"></script>
 
 		<!-- normalise.css -->
 		<link rel="stylesheet" href="http://css.cdn.tl/normalize.css"></link>
@@ -19,6 +22,18 @@
 	<body>
 		<div id="filedrop">Drop a file here</div>
 
+		<table id="top-pages">
+			<thead>
+				<th>Page</th>
+				<th>Hits</th>
+			</thead>
+			<tbody data-bind="foreach: topPages">
+				<td data-bind="text: prop"></td>
+				<td data-bind="text: length"></td>
+			</tbody>
+		</table>
+
+		<!--
 		<table id="logs">
 			<thead>
 				<th>IP</th>
@@ -40,7 +55,9 @@
 					<td data-bind="text: agent"></td>
 				</tr>
 			</tbody>
-
+		</table>
+		-->
+		<div>Logs: <span data-bind="text: logs().length"></span></div>
 	</body>
 </html>
 
