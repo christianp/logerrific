@@ -41,7 +41,22 @@ $(function() {
 
 	function loadData(content) {
 		var logs = content.split('\n');
-		vm.logs(logs.map(parseLog).filter(function(e){return e}));
+
+		var llogs = [];
+		function loadNext() {
+			var s = logs.slice(0,10000);
+			logs = logs.slice(10000);
+
+			llogs = llogs.concat(s.map(parseLog).filter(function(e){return e}))
+
+			vm.numLogs(llogs.length);
+
+			if(logs.length)
+				setTimeout(loadNext,1);
+			else
+				vm.logs(llogs);
+		}
+		setTimeout(loadNext,1);
 	}
 
 	function loadFile(file) {
@@ -85,7 +100,7 @@ $(function() {
 
 	function ViewModel() {
 		this.logs = ko.observableArray([]);
-		this.numLogs = ko.computed(function(){ return this.logs().length; },this);
+		this.numLogs = ko.observable(0);
 		var fnames = {
 			'ip': 'IP Address',
 			'date': 'Date',
