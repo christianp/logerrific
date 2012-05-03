@@ -1,10 +1,40 @@
 #filedrop {
 	border: 2px dashed grey;
-	width: 15em;
 	padding: 1em;
 	text-align: center;
 }
 
 #filedrop.over {
 	border-color: blue;
+}
+
+#filters {
+	float: left;
+	margin-right: 3em;
+}
+
+#data {
+	width: 90%;
+	margin: 0 auto;
+}
+
+#top-pages {
+	height: 20em;
+	overflow-y: auto;
+}
+
+#top-pages td {
+	padding: 0 .5em;
+}
+
+.filter {
+	margin-bottom: 0.5em;
+	clear: both;
+	text-align: right;
+}
+.filter label {
+	float: left;
+}
+.filter input {
+	margin-left: 1em;
 }

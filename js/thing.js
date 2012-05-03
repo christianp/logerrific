@@ -39,13 +39,17 @@ var re_date = /^(\d\d)\/([A-Z][a-z]+)\/(\d{4}):(\d\d):(\d\d):(\d\d) (.*)$/;
 
 $(function() {
 
+	function loadData(content) {
+		var logs = content.split('\n');
+		vm.logs(logs.map(parseLog).filter(function(e){return e}));
+	}
+
 	function loadFile(file) {
 		if(!file) { return; }
 		var fr = new FileReader();
 		fr.onload = function(e) {
 			var content = e.target.result;
-			var logs = content.split('\n');
-			vm.logs(logs.map(parseLog).filter(function(e){return e}));
+			loadData(content);
 		}
 		fr.readAsText(file);
 	}
@@ -82,15 +86,65 @@ $(function() {
 	function ViewModel() {
 		this.logs = ko.observableArray([]);
 		this.numLogs = ko.computed(function(){ return this.logs().length; },this);
+		var fnames = {
+			'ip': 'IP Address',
+			'date': 'Date',
+			'url': 'URL',
+			'method': 'HTTP Method',
+			'code': 'Status Code',
+			'agent': 'User agent'
+		};
+
+		this.filters = [];
+		for(var x in fnames) {
+			this.filters.push(new Filter(fnames[x],x));
+		}
+		this.uniqueOnly = ko.observable(false);
+
+		this.selection = ko.computed(function() {
+			var logs = this.logs();
+			for(var i=0;i<this.filters.length;i++) {
+				var f = this.filters[i];
+				if(f.regexp().length)
+				{
+					try{
+						logs = logs.filter(filterProp(f.prop,new RegExp(f.regexp())));
+					}
+					catch(e){}
+				}
+			}
+
+			if(this.uniqueOnly())
+			{
+				var ips = logs.groupBy('ip');
+				logs = [];
+				for(var i=0;i<ips.length;i++) {
+					var urls = ips[i].items.groupBy('url');
+					for(var j=0;j<urls.length;j++) {
+						logs.push(urls[j].items[0]);
+					}
+				}
+			}
+
+			return logs;
+		},this);
+
 		this.topPages= ko.computed(function() {
-			return this.logs()
-				.filter(filterProp('url',/\/$/))
+			console.log('top!')
+			return this.selection()
 				.groupBy('url')
 				.sort(sortProp('length'),true)
 				.slice(-10)
 				.reverse()
 			;
 		},this);
+
+	}
+
+	function Filter(name,prop) {
+		this.name = name;
+		this.prop = prop;
+		this.regexp = ko.observable('');
 	}
 
 	function Log(ip,userid,date,request,code,size,agent) {
@@ -113,6 +167,8 @@ $(function() {
 		var rbits = request.split(' ');
 		this.method = rbits[0];
 		this.url = rbits[1];
+		if(!/\.[A-Za-z0-9]+$/.test(this.url))	//make sure non-static file hits have a slash on the end
+			this.url = this.url.replace(/\/?$/,'/');
 		this.httpVersion = rbits[2];
 		this.code = code;
 		this.size = size;

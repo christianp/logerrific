@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>something by cp</title>
+		<title>Logerrific</title>
 
 		<!-- jquery -->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -21,43 +21,62 @@
 	</head>
 	<body>
 		<div id="filedrop">Drop a file here</div>
-
-		<table id="top-pages">
-			<thead>
-				<th>Page</th>
-				<th>Hits</th>
-			</thead>
-			<tbody data-bind="foreach: topPages">
-				<td data-bind="text: prop"></td>
-				<td data-bind="text: length"></td>
-			</tbody>
-		</table>
-
-		<!--
-		<table id="logs">
-			<thead>
-				<th>IP</th>
-				<th>User</th>
-				<th>Date</th>
-				<th>Request</th>
-				<th>HTTP Status</th>
-				<th>Size</th>
-				<th>Agent</th>
-			</thead>
-			<tbody data-bind="foreach: logs">
-				<tr>
-					<td data-bind="text: ip"></td>
-					<td data-bind="text: userid"></td>
-					<td data-bind="text: date"></td>
-					<td data-bind="text: request"></td>
-					<td data-bind="text: code"></td>
-					<td data-bind="text: size"></td>
-					<td data-bind="text: agent"></td>
-				</tr>
-			</tbody>
-		</table>
-		-->
 		<div>Logs: <span data-bind="text: logs().length"></span></div>
+
+		<div id="filters">
+			<h2>Filters</h2>
+			<div data-bind="foreach: filters">
+				<div class="filter">
+					<label><span data-bind="text: name"></span>:</label>
+					<input type="text" data-bind="value: regexp, valueUpdate: 'keyup'"/>
+				</div>
+			</div>
+			<div class="filter">
+				<label>Unique hits only?</label> <input type="checkbox" data-bind="checked: uniqueOnly"/>
+			</div>
+		</div>
+
+		<div id="data" data-bind="visible: selection().length>0">
+
+			<div id="top-pages">
+				<h2>Top 10 pages</h2>
+				<table>
+					<thead>
+						<th>Page</th>
+						<th>Hits</th>
+					</thead>
+					<tbody data-bind="foreach: topPages">
+						<td data-bind="text: prop.slice(0,50)"></td>
+						<td data-bind="text: length"></td>
+					</tbody>
+				</table>
+			</div>
+
+			<!--
+			<table id="logs">
+				<thead>
+					<th>IP</th>
+					<th>User</th>
+					<th>Date</th>
+					<th>Request</th>
+					<th>HTTP Status</th>
+					<th>Size</th>
+					<th>Agent</th>
+				</thead>
+				<tbody data-bind="foreach: logs">
+					<tr>
+						<td data-bind="text: ip"></td>
+						<td data-bind="text: userid"></td>
+						<td data-bind="text: date"></td>
+						<td data-bind="text: request"></td>
+						<td data-bind="text: code"></td>
+						<td data-bind="text: size"></td>
+						<td data-bind="text: agent"></td>
+					</tr>
+				</tbody>
+			</table>
+			-->
+		</div>
 	</body>
 </html>
 
